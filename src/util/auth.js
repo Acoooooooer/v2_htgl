@@ -1,5 +1,7 @@
 const TokenKey = 'vue_admin_template_token'
 
+// 操作token
+
 export function getToken () {
   return sessionStorage.getItem(TokenKey)
 }

@@ -24,6 +24,7 @@ import _ from 'loadsh'
 
 // 三级联动
 import CardThreeSelect from 'com/CardThreeSelect'
+import HinButton from 'com/HinButton'
 
 // mock
 // if (process.env.NODE_ENV === 'development') {
@@ -32,6 +33,7 @@ import CardThreeSelect from 'com/CardThreeSelect'
 // }
 
 Vue.component(CardThreeSelect.name, CardThreeSelect)
+Vue.component(HinButton.name, HinButton)
 
 // apis
 Vue.prototype.$apis = API
