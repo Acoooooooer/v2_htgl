@@ -3,47 +3,78 @@ import {
   getSpuById,
   getTrademarkList,
   spuImageList,
-  baseSaleAttrList
+  baseSaleAttrList,
+  saveSpuInfo,
+  updateSpuInfo,
+  deleteSpu,
+  skuImageList,
+  skuSaleAttrList,
+  skuAttrInfoList,
+  skuSaveSkuInfo,
+  skuFindBySpuId
 } from 'apis/product/spu'
+
+import { Message } from 'element-ui'
+
 const spuData = () => ({
   category3Id: '',
   description: '', // 描述
   tmId: '', // 品牌id
   spuName: '',
-  spuImageList: [ // 图片
+  spuImageList: [], // 图片
+  spuSaleAttrList: []// 平台属性
+})
+
+const skuData = () => ({
+  category3Id: 0,
+  spuId: 0,
+  tmId: 0,
+  spuName: '',
+
+  skuName: '',
+  price: '', // 价格
+  weight: '',
+  skuDefaultImg: '',
+  skuDesc: '',
+  skuAttrValueList: [ // 平台属性
+    // {
+    //   attrId: 0,
+    //   valueId: 0,
+    // }
+  ],
+  skuImageList: [ // 图片
     // {
     //   id: 0,
     //   imgName: '',
     //   imgUrl: '',
-    //   spuId: 0
+    //   isDefault: '',
+    //   skuId: 0,
+    //   spuImgId: 0
     // }
   ],
-  spuSaleAttrList: [ // 平台属性
+  skuSaleAttrValueList: [ // 销售属性
     // {
-    //   baseSaleAttrId: 0,
-    //   id: 0,
-    //   saleAttrName: '',
-    //   spuId: 0,
-    //   spuSaleAttrValueList: [
-    //     {
-    //       baseSaleAttrId: 0,
-    //       id: 0,
-    //       isChecked: '',
-    //       saleAttrName: '',
-    //       saleAttrValueName: '',
-    //       spuId: 0
-    //     }
-    //   ]
+    //   saleAttrId: 0,
+    //   saleAttrValueId: 0,
     // }
   ]
+
 })
+
 const stateHandle = () => {
   return {
-    sTable: {
+    sTable: { // spu
       tableLabel: ['序号', 'SPU名称', 'SPU描述', '日期', '操作'],
       tableWidth: [100, 280, '', 230, 300],
       tableProp: ['id', 'spuName', 'description', 'timer', 'active'],
       spuList: [] // 数据列表
+    },
+
+    kTable: { // sku
+      tableLabel: ['图片', '名称', '操作'],
+      tableWidth: [300, '', 300],
+      tableProp: ['imgUrl', 'imgName', 'active'],
+      spuList: [] // table 数据列表
     },
 
     sForm: { // 三级联动 id
@@ -64,7 +95,13 @@ const stateHandle = () => {
     spuData: spuData(), // spu信息
     tradmarkData: [{ a: 1 }], // 品牌信息
     spuImage: [], // spu图片
-    saleAttrList: [] // 平台全部销售属性
+    saleAttrList: [], // 平台全部销售属性
+
+    skuData: skuData(), // skuData
+    attrInfoList: [],
+    skuSaleAttrList: [],
+
+    skuFromSpuList: []// 查看sku列表
   }
 }
 
@@ -107,6 +144,10 @@ const mutations = {
   CHANGE_SPU_IMAGE: (store, poly) => {
     store.spuImage = poly
   },
+  // 修改 spuData中的属性
+  CHANGE_SPUIMAGELIST: (store, { name, value }) => {
+    store.spuData[name] = value
+  },
   // 修改 saleAttrList
   CHANGE_SALEATTRLIST: (store, poly) => {
     store.saleAttrList = poly
@@ -126,13 +167,49 @@ const mutations = {
   // 销售属性删除  spuSaleAttrList
   DEL_SPUSALEATTRLIST (store, poly) {
     store.spuData.spuSaleAttrList.splice(poly, 1)
+  },
+
+  // 修改 kTable
+  CHANGE_STABLE (store, poly) {
+    if (poly.name) {
+      store.kTable[poly.name] = poly.value
+    } else {
+      store.kTable = poly
+    }
+  },
+
+  // 修改 skuData
+  CHANGE_SKUDATA (store, poly) {
+    if (poly.name) {
+      store.skuData[poly.name] = poly.value
+      console.log(poly, store.skuDate)
+    } else {
+      store.skuData = { ...store.skuData, ...poly }
+    }
+  },
+  // 修改 attrInfoList
+  CHANGE_ATTRINFOLIST (store, poly) {
+    store.attrInfoList = poly
+  },
+  // 修改 skuSaleAttrList
+  CHANGE_SKUSALEATTRLIST (store, poly) {
+    store.skuSaleAttrList = poly
+  },
+  // 重置 skuSaleAttrList
+  RESET_SKUDATA (store, poly) {
+    store.skuData = skuData()
+  },
+  // 修改 skuFromSpuList
+  CHANGE_SKUFROMSPULIST (store, poly) {
+    store.skuFromSpuList = poly
   }
 }
 
 const actions = {
-  // 异步请求 修改 spuList
-  async getSpuDate ({ dispatch, commit, getters, rootGetters }, poly) {
+  // 修改 spuList
+  async getSpuDate ({ commit, rootGetters }, poly) {
     const result = await getSpuDate(poly)
+
     if (result.code === 200 && result.ok) {
       const { total, records } = result.data
       commit('CHANGE_S_TABLE', { spuList: rootGetters.timer(records) })
@@ -142,6 +219,7 @@ const actions = {
   // 获取spu信息
   async getSpuById ({ commit, rootGetters }, poly) {
     const result = await getSpuById(poly)
+
     if (result.code === 200) {
       rootGetters.timer(result.data.spuSaleAttrList)
       commit('CHANGE_SPU_DATA', result.data)
@@ -150,6 +228,7 @@ const actions = {
   // 获取品牌信息
   async getTrademarkList ({ commit }, poly) {
     const result = await getTrademarkList()
+
     if (result.code === 200) {
       commit('CHANGE_TRADMARK_DATA', result.data)
     }
@@ -157,6 +236,7 @@ const actions = {
   // spu图片
   async spuImageList ({ commit }, poly) {
     const result = await spuImageList(poly)
+
     if (result.code === 200) {
       result.data.map(v => {
         v.url = v.imgUrl
@@ -167,10 +247,125 @@ const actions = {
     }
   },
   // 平台全部销售属性
-  async baseSaleAttrList ({ commit, rootGetters }, poly) {
+  async baseSaleAttrList ({ commit }, poly) {
     const result = await baseSaleAttrList()
+
     if (result.code === 200) {
       commit('CHANGE_SALEATTRLIST', result.data)
+    }
+  },
+  // 修改 或 添加
+  async saveOrUpdateSpu ({ commit, dispatch, state }, poly) {
+    const { sForm: { category3Id }, pagination: { limit }, spuData } = state
+
+    const arr = state.spuImage.map(val => {
+      const { name, imgName, imgUrl, response } = val
+      return {
+        imgName: name || imgName,
+        imgUrl: imgUrl || response.data
+      }
+    })
+
+    commit('CHANGE_SPUIMAGELIST', { name: 'spuImageList', value: arr })
+    commit('CHANGE_SPUIMAGELIST', { name: 'category3Id', value: category3Id })
+
+    const result = spuData.id ? await updateSpuInfo(spuData) : await saveSpuInfo(spuData)
+    if (result.code === 200) {
+      Message({ type: 'success', message: '保存成功' })
+      dispatch('getSpuDate', { category3Id, limit, page: 1 })
+      commit('CHANGE_SENCE', 0)
+      commit('RESET_ADD_DATA')
+    }
+  },
+  // 删除spu
+  async deleteSpu ({ dispatch, commit, state }, poly) {
+    const { sForm: { category3Id }, pagination: { limit, page }, sTable: { spuList } } = state
+
+    const result = await deleteSpu(poly)
+
+    const pageNum = spuList.length > 1 && page < 1 ? page : page - 1
+
+    if (result.code === 200) {
+      commit('CHANGE_PAGIN', { page: pageNum })
+      dispatch('getSpuDate', { category3Id, limit, page: pageNum })
+      Message({ type: 'success', message: '删除成功' })
+    }
+  },
+
+  // ................
+  // 获取图片接口
+  async skuImageList ({ commit }, poly) {
+    const result = await skuImageList(poly)
+    if (result.code === 200) {
+      const value = result.data.map(v => {
+        v.isDefault = 0
+        return v
+      })
+      commit('CHANGE_STABLE', { value, name: 'spuList' })
+    }
+  },
+  // 获取销售属性
+  async skuSaleAttrList ({ commit }, poly) {
+    const result = await skuSaleAttrList(poly)
+
+    if (result.code === 200) {
+      commit('CHANGE_SKUSALEATTRLIST', result.data)
+    }
+  },
+
+  // 获取平台属性
+  async skuAttrInfoList ({ commit }, poly) {
+    const result = await skuAttrInfoList(poly)
+    if (result.code === 200) {
+      commit('CHANGE_ATTRINFOLIST', result.data)
+    }
+  },
+  // 保存
+  async skuSaveSkuInfo ({ commit, state }, poly) {
+    console.log('skuSave', poly)
+
+    const skuAttrValueList = state.attrInfoList.map(v => {
+      if (v.idAndAttrId) {
+        const arr = v.idAndAttrId.split(':')
+        return { attrId: arr[1], valueId: arr[0] }
+      }
+      return false
+    }).filter(v => v)
+
+    const skuSaleAttrValueList = state.skuSaleAttrList.map(v => {
+      if (v.idAndValueId) {
+        const arr = v.idAndValueId.split(':')
+        return { saleAttrId: arr[0], saleAttrValueId: arr[1] }
+      }
+      return false
+    }).filter(v => v)
+
+    const skuImageList = Array.isArray(poly)
+      ? poly.map(v => ({
+        spuImgId: v.id,
+        imgName: v.imgName,
+        imgUrl: v.imgUrl,
+        isDefault: v.isDefault
+      }))
+      : []
+
+    commit('CHANGE_SKUDATA', { skuAttrValueList, skuSaleAttrValueList, skuImageList })
+
+    const result = await skuSaveSkuInfo(state.skuData)
+
+    if (result.code === 200) {
+      Message({ type: 'success', message: '添加成功' })
+      commit('CHANGE_SENCE', 0)
+      commit('RESET_SKUDATA')
+    }
+  },
+  // 查看当前spu的sku列表
+  async skuFindBySpuId ({ commit }, poly) {
+    const result = await skuFindBySpuId(poly)
+    if (result.code === 200) {
+      console.log(result.data)
+      commit('CHANGE_SKUFROMSPULIST', result.data)
+      return result.data
     }
   }
 }

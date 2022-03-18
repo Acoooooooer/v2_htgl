@@ -35,7 +35,7 @@ const routes = [
         path: '/trademark',
         component: () => import('views/product/trademark'),
         name: 'Trademark',
-        meta: { title: 'Trademark', icon: 'iconfontyundonghuwai' },
+        meta: { title: '品牌管理', icon: 'iconfontyundonghuwai' },
         children: [
           {
             path: '/trademark/additem',
@@ -47,22 +47,22 @@ const routes = [
         ]
       },
       {
-        path: '/attr',
-        component: () => import('views/product/attr'),
-        name: 'Attr',
-        meta: { title: 'Attr', icon: 'iconfontgongyichongwu' }
-      },
-      {
         path: '/spu',
         component: () => import('views/product/spu'),
         name: 'Spu',
-        meta: { title: 'Spu', icon: 'iconfontzhaomingdianzi' }
+        meta: { title: 'Spu管理', icon: 'iconfontzhaomingdianzi' }
+      },
+      {
+        path: '/attr',
+        component: () => import('views/product/attr'),
+        name: 'Attr',
+        meta: { title: '平台属性管理', icon: 'iconfontgongyichongwu' }
       },
       {
         path: '/sku',
         component: () => import('views/product/sku'),
         name: 'Sku',
-        meta: { title: 'Sku', icon: 'icon1' }
+        meta: { title: 'Sku管理', icon: 'icon1' }
       }
 
     ]

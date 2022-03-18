@@ -2,7 +2,6 @@
   <div class="AttrIdex">
     <el-card>
       <card-three-select @getShopId="getShopId" :disabled="isShowTable"></card-three-select>
-      {{ cForm }}
     </el-card>
 
     <el-card>
@@ -97,7 +96,13 @@
         >添加属性</el-button>
 
         <!-- 表格 -->
-        <el-table style="width:100%;margin-top: 10px;" border :data="cTable.attrList" stripe>
+        <el-table
+          empty-text="暂无数据，请选择分类类型"
+          style="width:100%;margin-top: 10px;"
+          border
+          :data="cTable.attrList"
+          stripe
+        >
           <el-table-column
             v-for="(v, i) in 5"
             :key="`${v.attrName}${i}`"

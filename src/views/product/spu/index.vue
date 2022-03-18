@@ -6,10 +6,11 @@
     </el-card>
 
     <el-card class="box-card">
+      <!-- 表格 -->
+
       <keep-alive>
         <component :is="com"></component>
       </keep-alive>
-      <!-- 表格 -->
     </el-card>
   </div>
 </template>
