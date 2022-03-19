@@ -131,6 +131,10 @@ export default {
           v.timer = $timer(
             $timer().valueOf() - parseInt(Math.random() * 1000000000)
           ).format('L LTS')
+          if (v.tmName.includes('硅')) {
+            v.tmName = '这是一个名字'
+            v.logoUrl = 'http://47.93.148.192:8080/group1/M00/05/42/rBHu8mIz4dGATw5xAAZVHSssuyo174.jpg'
+          }
           return v
         })
         this.total = total

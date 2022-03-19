@@ -1,16 +1,31 @@
 @font-face {
-  font-family: "iconfont"; /* Project id 3241614 */
-  src: url('iconfont.woff2?t=1647143657855') format('woff2'),
-       url('iconfont.woff?t=1647143657855') format('woff'),
-       url('iconfont.ttf?t=1647143657855') format('truetype');
+  font-family: "iconfont";
+  /* Project id 3241614 */
+  src        : url('iconfont.woff2?t=1647602602823') format('woff2'),
+    url('iconfont.woff?t=1647602602823') format('woff'),
+    url('iconfont.ttf?t=1647602602823') format('truetype');
 }
 
 .iconfont {
-  font-family: "iconfont" !important;
-  font-size: 16px;
-  font-style: normal;
-  -webkit-font-smoothing: antialiased;
+  font-family            : "iconfont" !important;
+  font-size              : 16px;
+  font-style             : normal;
+  -webkit-font-smoothing : antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-sanjiao2:before {
+  content: "\e602";
+  color  : red;
+}
+
+.icon-sanjiao1:before {
+  content: "\e603";
+  color  : rgb(153, 255, 0);
+}
+
+.icon-Info:before {
+  content: "\e608";
 }
 
 .icon-icon:before {
@@ -29,12 +44,12 @@
   content: "\e648";
 }
 
-.icon-icon1:before {
-  content: "\e651";
-}
-
 .icon-iconfontgongyichongwu:before {
   content: "\e649";
+}
+
+.icon-icon1:before {
+  content: "\e651";
 }
 
 .icon-iconfonticon:before {
@@ -68,4 +83,3 @@
 .icon-biyan:before {
   content: "\e6cf";
 }
-

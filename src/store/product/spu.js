@@ -152,7 +152,7 @@ const mutations = {
   CHANGE_SALEATTRLIST: (store, poly) => {
     store.saleAttrList = poly
   },
-  // 重置 addSpu页面的数据
+  // 重置 addSpu页面的数据  spuData
   RESET_ADD_DATA: (store, poly) => {
     store.spuData = spuData()
     store.tradmarkData = []

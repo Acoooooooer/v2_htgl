@@ -126,7 +126,9 @@ export default {
     ...mapMutations({
       CHANGE_SENCE: (commit, poly) => commit('spu/CHANGE_SENCE', poly),
       CHANGE_IS_SHOWTABLE: (commit, poly) => commit('spu/CHANGE_IS_SHOWTABLE', poly),
-      RESET_SKUDATA: (commit, poly) => commit('spu/RESET_SKUDATA', poly)
+      RESET_SKUDATA: (commit, poly) => commit('spu/RESET_SKUDATA', poly),
+      CHANGE_SKUDATA: (commit, poly) => commit('spu/CHANGE_SKUDATA', poly),
+      RESET_ADD_DATA: (commit, poly) => commit('spu/RESET_ADD_DATA', poly)
     }),
     ...mapActions({
       skuSaveSkuInfo: (dispatch, poly) => dispatch('spu/skuSaveSkuInfo', poly)
@@ -138,6 +140,7 @@ export default {
     // 返回
     back () {
       this.RESET_SKUDATA()
+      this.RESET_ADD_DATA()
       this.CHANGE_SENCE(0)
       this.CHANGE_IS_SHOWTABLE(true)
     },
@@ -150,6 +153,8 @@ export default {
     defaultHanlde (row, num) {
       this.kTable.spuList.forEach(v => { v.isDefault = 0 })
       num && (row.isDefault = num)
+      this.CHANGE_SKUDATA({ skuDefaultImg: row.imgUrl })
+      console.log(row)
     }
   },
   computed: {

@@ -16,31 +16,47 @@ import 'styles/index.less'
 import 'icons'
 // iconfont
 import 'assets/iconfont/iconfont.css'
+// 全局守卫
 import '@/permission'
 
 import API from 'apis'
 import timer from 'util/momentZh'
 import _ from 'loadsh'
 
+// echarts 引入
+import * as echarts from 'echarts'
+// import map from './map.json'
+
+/** 组件引入 */
 // 三级联动
 import CardThreeSelect from 'com/CardThreeSelect'
+// button 按钮
 import HinButton from 'com/HinButton'
+// card  echarts
+import CardDashBoard from 'com/CardDashBoard'
 
-// mock
-// if (process.env.NODE_ENV === 'development') {
-//   const { mockXHR } = require('../mock')
-//   mockXHR()
-// }
+/**
+ *
+ *
+ *
+ */
 
 Vue.component(CardThreeSelect.name, CardThreeSelect)
 Vue.component(HinButton.name, HinButton)
+Vue.component(CardDashBoard.name, CardDashBoard)
 
-// apis
+/** **** apis *****/
 Vue.prototype.$apis = API
-// moment
+
+/** **** moment *****/
 Vue.prototype.$timer = timer
-// loadsh
+
+/** **** loadsh *****/
 Vue.prototype.$lds = _
+
+/** **** echarts *****/
+// echarts.registerMap('china', map) // 注册中国地图
+Vue.prototype.$echarts = echarts
 
 Vue.config.productionTip = false
 
@@ -51,3 +67,9 @@ new Vue({
   store,
   render: h => h(App)
 }).$mount('#app')
+
+// mock
+// if (process.env.NODE_ENV === 'development') {
+//   const { mockXHR } = require('../mock')
+//   mockXHR()
+// }
