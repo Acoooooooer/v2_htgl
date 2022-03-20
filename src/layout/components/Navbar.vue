@@ -29,7 +29,7 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import { mapGetters, mapState } from 'vuex'
 import Breadcrumb from 'com/Breadcrumb'
 import Hamburger from 'com/Hamburger'
 
@@ -40,7 +40,10 @@ export default {
     Hamburger
   },
   computed: {
-    ...mapGetters(['sidebar', 'avatar'])
+    ...mapGetters(['sidebar', 'avatar']),
+    ...mapState({
+      barChartsInit: store => store.dash.barChartsInit
+    })
   },
   methods: {
     toggleSideBar () {

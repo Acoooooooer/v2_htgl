@@ -1,31 +1,24 @@
 <template>
-  <!-- 平滑曲线图 -->
-  <div ref="box" class="charts">LineChart</div>
+  <div class="LineChart">
+    <div class="top">
+      <span class="search_user_num">{{ title }}</span>
+      <span class="iconfont icon-Info"></span>
+    </div>
+    <div class="number">
+      <slot name="icon"></slot>
+    </div>
+    <div class="box" ref="charts"></div>
+  </div>
 </template>
 
-<script>
-import { mapMutations, mapState } from 'vuex'
+<script>import { mapMutations, mapState } from 'vuex'
 
 export default {
   name: 'LineChart',
-  computed: {
-    ...mapState({
-      opened: store => store.app.sidebar.opened
-    }),
-    data () {
-      return {
-        lineChart: null
-      }
-    },
-    dataArr () {
-      let base = +new Date(1988, 9, 3)
-      const oneDay = 24 * 3600 * 1000
-      const dataArr = [[base, Math.random() * 300]]
-      for (let i = 1; i < 20000; i++) {
-        const now = new Date((base += oneDay))
-        dataArr.push([+now, Math.round((Math.random() - 0.5) * 20 + dataArr[i - 1][1])])
-      }
-      return dataArr
+  props: ['dataArr', 'title'],
+  data () {
+    return {
+      lineChart: null
     }
   },
   methods: {
@@ -33,12 +26,17 @@ export default {
       CHANGE_BARCHARTSINIT: (commit, poly) => commit('dash/CHANGE_BARCHARTSINIT', poly)
     })
   },
+  computed: {
+    ...mapState({
+      opened: store => store.app.sidebar.opened
+    })
+  },
   watch: {
     opened (v) { // 监听侧边栏开关
       const time = setTimeout(() => {
-        if (this.$refs.box.offsetWidth) {
+        if (this.$refs.charts.offsetWidth) {
           const obj = {
-            width: this.$refs.box.offsetWidth,
+            width: this.$refs.charts.offsetWidth,
             animation: {
               duration: 50,
               easing: 'ease-out'
@@ -51,9 +49,8 @@ export default {
     }
   },
   mounted () {
-    // 初始化echarts
     this.$nextTick(() => {
-      const lineChart = this.$echarts.init(this.$refs.box)
+      const lineChart = this.$echarts.init(this.$refs.charts)
       this.lineChart = lineChart
       this.CHANGE_BARCHARTSINIT(lineChart)
 
@@ -67,27 +64,19 @@ export default {
         },
         tooltip: {
           show: true,
-          trigger: 'axis',
-          formatter: function (params) {
-            let result = ''
-            const dotHtml = '<span style="display:inline-block;margin-right:5px;border-radius:10px;width:10px;height:10px;background-color:rgba(102, 0, 128, 0.5)"></span>'
-            params.forEach((item) => {
-              result += item.axisValue + '</br>' + dotHtml + item.data[1]
-            })
-            return result
-          }
+          trigger: 'axis'
         },
         series: [
           {
             type: 'line',
             data: this.dataArr,
+            smooth: true,
             itemStyle: { // 拐点标志
               opacity: 0,
               borderJoin: 'round'
             },
-
             lineStyle: {
-              color: 'purple'
+              color: 'rgba(102, 0, 128)'
             },
             areaStyle: {
               color: {
@@ -105,17 +94,9 @@ export default {
                 }],
                 global: false // 缺省为 false
               }
-            },
-            smooth: true
-
+            }
           }
-        ],
-        grid: {
-          left: 0,
-          top: 2,
-          right: 8,
-          bottom: 10
-        }
+        ]
       }
       lineChart.setOption(option)
     })
@@ -124,9 +105,32 @@ export default {
 </script>
 
 <style lang="less" scoped>
-.charts {
-  width: 100%;
-  height: 50px;
-  color: rgba(102, 0, 128, 0.692);
+.LineChart {
+  .box {
+    width: 100%;
+    height: 100px;
+  }
+
+  .search_user_num {
+    display: inline-block;
+    margin-right: 15px;
+  }
+  .top {
+    margin-top: 15px;
+  }
+  .iconfont {
+    margin-left: 15px;
+  }
+  .number {
+    .bignum {
+      font-size: 24px;
+    }
+    margin-top: 25px;
+    .rightnum {
+      display: inline-block;
+      margin-left: 15px;
+      color: #aaaaaa;
+    }
+  }
 }
 </style>

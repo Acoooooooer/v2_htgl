@@ -12,6 +12,11 @@ export default {
       default: ''
     }
   },
+  /**
+   *
+   * @param {*} h  h('div') /  h({template:"<span></span>"})  / h(()=>({template:"<span></span>"}))
+   * @param {*} context 数据对象
+   */
   render (h, context) {
     const { icon, title } = context.props
     const vnodes = []
@@ -25,8 +30,10 @@ export default {
     }
 
     if (title) {
-      vnodes.push(<span slot="title">{title}</span>)
+      vnodes.push(<span slot='title'>{title}</span>)
     }
+
+    // console.log(vnodes)
     return vnodes
   }
 }

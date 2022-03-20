@@ -67,9 +67,3 @@ new Vue({
   store,
   render: h => h(App)
 }).$mount('#app')
-
-// mock
-// if (process.env.NODE_ENV === 'development') {
-//   const { mockXHR } = require('../mock')
-//   mockXHR()
-// }

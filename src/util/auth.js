@@ -1,4 +1,4 @@
-const TokenKey = 'vue_admin_template_token'
+const TokenKey = 'vue2_admin_template_token'
 
 // 操作token
 

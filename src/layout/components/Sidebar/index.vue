@@ -24,7 +24,7 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import { mapGetters, mapState } from 'vuex'
 import Logo from './Logo'
 import SidebarItem from './SidebarItem'
 
@@ -48,8 +48,12 @@ export default {
   },
   computed: {
     ...mapGetters(['sidebar']),
+    ...mapState({
+      AllRoutess: store => store.user.AllRoutes
+    }),
     routes () {
-      return this.$router.options.routes
+      // console.log(this.AllRoutess)
+      return this.AllRoutess
     },
     activeMenu () {
       const route = this.$route

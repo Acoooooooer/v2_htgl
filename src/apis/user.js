@@ -10,14 +10,15 @@ const apis = {
   logout: '/admin/acl/index/logout'
 }
 
-const mock = {
-  login: '/vue-admin-template/user/login',
-  getInfo: '/vue-admin-template/user/info',
-  logout: '/vue-admin-template/user/logout'
-}
+// const mock = {
+//   login: '/vue-admin-template/user/login',
+//   getInfo: '/vue-admin-template/user/info',
+//   logout: '/vue-admin-template/user/logout'
+// }
 
-const str = 'apis'
-const res = str === 'mock' ? mock : apis
+// const str = 'apis'
+// const res = str === 'mock' ? mock : apis
+const res = apis
 // 登录
 export function login (data) {
   return request({
@@ -44,11 +45,13 @@ export function logout () {
   })
 }
 
-// function a () {
-//   // return request({
-//   //   url: 'api/a',
-//   //   method: 'post'
-//   // })
-//   return fetch('dev-api/a', { method: 'POST' })
-// }
-// console.log(a())
+// 权限列表
+export function permission () {
+  return request({
+    // url: `/admin/acl/role/${1}/${1000000}`,
+    // url: `/admin/acl/role/get/${'1505411139111710721'}`,
+    url: `/admin/acl/user/${1}/${1000000}`,
+    // url: `/admin/acl/user/get/${'1505070813901713409'}`,
+    method: 'get'
+  })
+}

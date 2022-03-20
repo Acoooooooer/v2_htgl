@@ -5,6 +5,7 @@ import NProgress from 'nprogress' // 进度条插件,提高用户体验
 import 'nprogress/nprogress.css' // style
 import { getToken } from 'util/auth' //  token
 import getPageTitle from 'util/get-page-title'
+import { asyroutes } from 'rou/routes'
 
 NProgress.configure({ showSpinner: false })
 
@@ -32,8 +33,8 @@ router.beforeEach(async (to, from, next) => {
         next()
       } else {
         try {
-          // get user info
-          await store.dispatch('user/getInfo')
+          // 调用用户信息接口
+          await store.dispatch('user/getInfo', asyroutes)
           next()
         } catch (error) {
           // remove token

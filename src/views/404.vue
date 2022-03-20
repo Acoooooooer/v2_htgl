@@ -24,22 +24,15 @@
         />
       </div>
       <div class="bullshit">
-        <div class="bullshit__oops">OOPS!</div>
+        <div class="bullshit__oops">路径错误!</div>
+
+        <div class="bullshit__headline">页面迷路了...</div>
         <div class="bullshit__info">
-          All rights reserved
-          <a
-            style="color: #20a0ff"
-            href="https://wallstreetcn.com"
-            target="_blank"
-            >wallstreetcn</a
-          >
+         出现了一些问题
         </div>
-        <div class="bullshit__headline">{{ message }}</div>
-        <div class="bullshit__info">
-          Please check that the URL you entered is correct, or click the button
-          below to return to the homepage.
-        </div>
-        <a href="" class="bullshit__return-home">Back to home</a>
+        <el-button size="mini" type="primary">
+          <router-link to="/">返回首页</router-link>
+        </el-button>
       </div>
     </div>
   </div>

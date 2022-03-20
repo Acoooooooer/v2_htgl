@@ -8,8 +8,8 @@ const stateHandle = () => {
     skuList: [], // sku列表
     pagination: { // 分页器
       total: 0, // 总数
-      sizes: [5, 8, 12],
-      limit: 8, // 每页条数
+      sizes: [6, 9, 12],
+      limit: 6, // 每页条数
       page: 1 // 当前页码
     },
     loading: false, // 加载中...

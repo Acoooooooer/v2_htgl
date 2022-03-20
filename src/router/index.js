@@ -1,13 +1,14 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import routes from './routes'
+import { constantroutes } from './routes'
 
+// 使用 路由
 Vue.use(VueRouter)
 
 const createRouter = () => new VueRouter({
   mode: 'history',
-  base: process.env.BASE_URL,
-  routes
+  // base: process.env.BASE_URL,
+  routes: constantroutes
 })
 
 const router = createRouter()
@@ -18,7 +19,8 @@ VueRouter.prototype.push = function push (location) {
   return originalPush.call(this, location).catch(err => err)
 }
 
-export function resetRouter () { // 重置 router
+// 重置 router
+export function resetRouter () {
   const newRouter = createRouter()
   router.matcher = newRouter.matcher
 }

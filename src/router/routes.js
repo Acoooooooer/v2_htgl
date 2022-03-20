@@ -1,29 +1,7 @@
-import Layout from 'layout'
-const routes = [
-  {
-    path: '/login',
-    component: () => import('views/login/index'),
-    hidden: true
-  },
+import Layout from 'layout' /* 外层组件  一级 */
 
-  {
-    path: '/404',
-    component: () => import('views/404'),
-    hidden: true
-  },
-
-  {
-    path: '/',
-    component: Layout,
-    redirect: '/dashboard',
-    children: [{
-      path: '/dashboard',
-      name: 'Dashboard',
-      component: () => import('views/dashboard/index'),
-      meta: { title: 'Echarts', icon: 'icon' }
-    }]
-  },
-
+// 权限路由, 异步
+export const asyroutes = (() => [
   {
     path: '/product',
     component: Layout,
@@ -63,9 +41,42 @@ const routes = [
         component: () => import('views/product/sku'),
         name: 'Sku',
         meta: { title: 'Sku管理', icon: 'icon1' }
+      },
+      {
+        path: '/skusssss',
+        component: () => import('views/product/sku'),
+        name: 'Skusssss',
+        meta: { title: 'Sku管理', icon: 'icon1' }
       }
 
     ]
+  }
+])()
+
+// 固定路由, 常量
+export const constantroutes = [
+  {
+    path: '/login',
+    component: () => import('views/login/index'),
+    hidden: true
+  },
+
+  {
+    path: '/404',
+    component: () => import('views/404'),
+    hidden: true
+  },
+
+  {
+    path: '/',
+    component: Layout,
+    redirect: '/dashboard',
+    children: [{
+      path: '/dashboard',
+      name: 'Dashboard',
+      component: () => import('views/dashboard/index'),
+      meta: { title: 'Echarts', icon: 'icon' }
+    }]
   },
 
   {
@@ -74,5 +85,3 @@ const routes = [
     hidden: true
   }
 ]
-
-export default routes

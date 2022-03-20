@@ -7,6 +7,7 @@ import user from './modules/user'
 import trademark from './product/trademark'
 import spu from './product/spu'
 import sku from './product/sku'
+import dash from './dashboard/dash'
 
 Vue.use(Vuex)
 
@@ -17,7 +18,8 @@ const store = new Vuex.Store({
     user,
     trademark,
     spu,
-    sku
+    sku,
+    dash
   },
   getters
 })

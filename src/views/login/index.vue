@@ -5,8 +5,8 @@
       :model="loginForm"
       :rules="loginRules"
       class="login-form"
-      autocomplete="on"
       label-position="left"
+      @submit.native.prevent
     >
       <div class="title-container">
         <h3 class="title">用户登录</h3>
@@ -23,7 +23,7 @@
           name="username"
           type="text"
           tabindex="1"
-          auto-complete="on"
+          autocomplete="off"
         />
       </el-form-item>
 
@@ -39,13 +39,11 @@
           placeholder="Password"
           name="password"
           tabindex="2"
-          autocomplete="on"
+          autocomplete="off"
           @keyup.enter.native="handleLogin"
         />
         <span class="show-pwd" @click="showPwd">
-          <span
-            :class="['iconfont', `icon-${passwordType ? 'biyan' : 'yanjing'}`]"
-          ></span>
+          <span :class="['iconfont', `icon-${passwordType ? 'biyan' : 'yanjing'}`]"></span>
         </span>
       </el-form-item>
 
@@ -54,19 +52,39 @@
         type="primary"
         style="width: 100%; margin-bottom: 30px"
         @click.native.prevent="handleLogin"
-        >登录</el-button
-      >
+      >登录</el-button>
 
-      <!-- <div class="tips">
-        <span style="margin-right: 20px">username: admin</span>
-        <span> password: any</span>
-      </div> -->
+      <!-- <el-button @click.native.prevent="aaa">获取列表</el-button> -->
+
+      <div class="tips">
+        <span style="margin-right: 20px;">管理权限</span>
+        <span style="margin-right: 20px">
+          username:
+          <span class="user">admin</span>
+        </span>
+        <span>
+          password:
+          <span class="pwd">111111</span>
+        </span>
+      </div>
+      <div class="tips">
+        <span style="margin-right: 20px;">普通权限</span>
+        <span style="margin-right: 20px">
+          username:
+          <span class="user">wode</span>
+        </span>
+        <span>
+          &nbsp;password:
+          <span class="pwd">111111</span>
+        </span>
+      </div>
     </el-form>
   </div>
 </template>
 
 <script>
-// import { validUsername } from 'util/validate'
+import { Message } from 'element-ui'
+import { mapActions } from 'vuex'
 
 export default {
   name: 'LoinIndex',
@@ -106,12 +124,19 @@ export default {
   watch: {
     $route: {
       handler: function (route) {
-        this.redirect = route.query && route.query.redirect
+        this.redirect = route.query.redirect
       },
       immediate: true
     }
   },
   methods: {
+    ...mapActions({
+      login: (dispatch, ploy) => dispatch('user/login', ploy),
+      permission: (dispatch, ploy) => dispatch('user/permission', ploy)
+    }),
+    aaa () {
+      this.permission()
+    },
     showPwd () {
       if (this.passwordType === 'password') {
         this.passwordType = ''
@@ -128,20 +153,23 @@ export default {
     handleLogin () {
       // 验证是否符合规则
       this.$refs.loginForm.validate((valid) => {
-        if (valid) {
+        if (valid) { // 验证成功
           this.loading = true
-          this.$store
-            .dispatch('user/login', this.loginForm)
+          this.login(this.loginForm)
             .then((v) => {
               this.$router.push({ path: this.redirect || '/' })
               this.loading = false
             })
             .catch((err) => {
               console.log(err)
+              Message({
+                type: 'error',
+                message: err
+              })
               this.loading = false
             })
         } else {
-          console.log('error submit!!')
+          Message('请完成表单')
           return false
         }
       })
@@ -179,11 +207,6 @@ export default {
       color: @light_gray;
       height: 47px;
       caret-color: @cursor;
-
-      &:-webkit-autofill {
-        box-shadow: 0 0 0px 1000px @bg inset !important;
-        -webkit-text-fill-color: @cursor !important;
-      }
     }
   }
 
@@ -222,8 +245,15 @@ export default {
     font-size: 14px;
     color: #fff;
     margin-bottom: 10px;
+    background: #2d3a4b50;
 
     span {
+      .user {
+        user-select: all;
+      }
+      .pwd {
+        user-select: all;
+      }
       &:first-of-type {
         margin-right: 16px;
       }
