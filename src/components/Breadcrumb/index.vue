@@ -5,8 +5,7 @@
         <span
           v-if="v.redirect === 'noRedirect' || i == levelList.length - 1"
           class="no-redirect"
-          >{{ v.meta.title }}</span
-        >
+        >{{ v.meta.title }}</span>
         <a v-else @click.prevent="handleLink(v)">{{ v.meta.title }}</a>
       </el-breadcrumb-item>
     </transition-group>
@@ -54,6 +53,7 @@ export default {
     },
     handleLink (item) {
       const { redirect, path } = item
+      sessionStorage.setItem('path', redirect || path)
       if (redirect) {
         this.$router.push(redirect)
         return

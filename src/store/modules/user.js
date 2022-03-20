@@ -18,7 +18,8 @@ const getDefaultState = () => {
     roles: [], // 用户角色
     buttons: [], // 按钮权限
     filterAsyncRoutes: [], // 已有异步路由和返回的标记信息 对比后的路由
-    AllRoutes: [] // 合并路由
+    AllRoutes: [], // 合并路由
+    routeStr: '' // 当前路由
   }
 }
 
@@ -52,8 +53,11 @@ const mutations = {
     filterAsyncRoutes.forEach(v => {
       router.addRoute(v)
     })
-    // router.push({ path: '' })
-    router.back()
+    router.push({ path: sessionStorage.getItem('path') })
+  },
+
+  CHANEG_ROUTESTR (state, path) {
+    state.routeStr = path
   }
 
 }

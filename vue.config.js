@@ -1,18 +1,20 @@
 const { defineConfig } = require('@vue/cli-service')
 
 console.log(process.env.VUE_APP_BASE_API)
+const isDev = process.env.NODE_ENV === 'development'
+console.log(isDev ? 'development' : 'production')
+
 module.exports = defineConfig({
   transpileDependencies: true,
-  lintOnSave: process.env.NODE_ENV === 'development',
+  lintOnSave: isDev,
+  publicPath: isDev ? ' ' : './',
   devServer: {
     proxy: {
-      [process.env.VUE_APP_BASE_API]: {
+      '/api': {
         target: 'http://39.98.123.211',
-        // target: 'http://localhost:5000',
         changeOrogin: true,
-        secure: false,
         pathRewrite: {
-          ['^' + process.env.VUE_APP_BASE_API]: ' '
+          '^/api': ' '
         }
       }
     }
@@ -35,4 +37,5 @@ module.exports = defineConfig({
     }
 
   })
+
 })

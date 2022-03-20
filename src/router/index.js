@@ -5,13 +5,13 @@ import { constantroutes } from './routes'
 // 使用 路由
 Vue.use(VueRouter)
 
-const createRouter = () => new VueRouter({
-  mode: 'history',
+const createRouters = () => new VueRouter({
+  // mode: 'history',
   // base: process.env.BASE_URL,
   routes: constantroutes
 })
 
-const router = createRouter()
+const router = createRouters()
 
 // 解决多次点击路由报错问题
 const originalPush = VueRouter.prototype.push
@@ -21,7 +21,7 @@ VueRouter.prototype.push = function push (location) {
 
 // 重置 router
 export function resetRouter () {
-  const newRouter = createRouter()
+  const newRouter = createRouters()
   router.matcher = newRouter.matcher
 }
 

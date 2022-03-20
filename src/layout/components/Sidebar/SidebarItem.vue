@@ -11,6 +11,7 @@
         <el-menu-item
           :index="resolvePath(onlyOneChild.path)"
           :class="{ 'submenu-title-noDropdown': !isNest }"
+          @click="toA(resolvePath(onlyOneChild.path))"
         >
           <item
             :icon="onlyOneChild.meta.icon || (item.meta && item.meta.icon)"
@@ -21,7 +22,6 @@
     </template>
 
     <el-submenu v-else ref="subMenu" :index="resolvePath(item.path)" popper-append-to-body>
-
       <template slot="title">
         <item v-if="item.meta" :icon="item.meta && item.meta.icon" :title="item.meta.title" />
       </template>
@@ -70,6 +70,9 @@ export default {
     return {}
   },
   methods: {
+    toA (to) {
+      sessionStorage.setItem('path', to)
+    },
     hasOneShowingChild (children = [], parent) {
       const showingChildren = children.filter((item) => {
         if (item.hidden) {

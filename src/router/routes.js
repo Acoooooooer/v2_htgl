@@ -1,7 +1,7 @@
 import Layout from 'layout' /* 外层组件  一级 */
 
 // 权限路由, 异步
-export const asyroutes = (() => [
+export const asyroutes = [
   {
     path: '/product',
     component: Layout,
@@ -51,7 +51,7 @@ export const asyroutes = (() => [
 
     ]
   }
-])()
+]
 
 // 固定路由, 常量
 export const constantroutes = [

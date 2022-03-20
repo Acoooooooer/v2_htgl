@@ -84,7 +84,7 @@
 
 <script>
 import { Message } from 'element-ui'
-import { mapActions } from 'vuex'
+import { mapActions, mapMutations, mapState } from 'vuex'
 
 export default {
   name: 'LoinIndex',
@@ -129,7 +129,15 @@ export default {
       immediate: true
     }
   },
+  computed: {
+    ...mapState({
+      routeStr: store => store.user.routeStr
+    })
+  },
   methods: {
+    ...mapMutations({
+      CHANEG_ROUTESTR: (commit, ploy) => commit('user/CHANEG_ROUTESTR', ploy)
+    }),
     ...mapActions({
       login: (dispatch, ploy) => dispatch('user/login', ploy),
       permission: (dispatch, ploy) => dispatch('user/permission', ploy)
@@ -157,6 +165,7 @@ export default {
           this.loading = true
           this.login(this.loginForm)
             .then((v) => {
+              sessionStorage.setItem('path', this.redirect || '/')
               this.$router.push({ path: this.redirect || '/' })
               this.loading = false
             })
